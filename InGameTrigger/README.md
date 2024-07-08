@@ -5,5 +5,6 @@ Script that enables high quality EEG data collection by triggering clicks in ran
 ### Usage
 
 ```shell
-python ./main.py  --random_range=8,30,2 --key=d --filename=lol
+python ./main.py  --random_range=300,320,1 --key=d --filename=lol
 ```
+d
