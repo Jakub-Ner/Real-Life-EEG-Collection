@@ -27,6 +27,7 @@ def listen_udp(full_path, duration: int, dialogue_box=True):
 
             if number_of_bytes_received > 0:
                 message_byte = receive_buffer_byte[:number_of_bytes_received]
+                # add marker column 
                 file.write(message_byte)
 
     except Exception as ex:
