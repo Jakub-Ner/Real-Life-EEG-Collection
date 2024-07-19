@@ -1,77 +1,75 @@
-import os
-import random
-from ahk import AHK
-from pynput import keyboard
-import time
-import fire
+from fire import Fire
 
-from utils.common import assert_udp, get_now, parse_filename, parse_range, EEGEvent, parse_duration
-from utils.EEGRecorder import EEGRecorder
+from configuation import CONFIG
+from src.recorder.eeg.utils.helpers import Recorder
+from src.recorder.SharedQueue import SharedQueue
+from src.randomClick.RandomClick import RandomClick
+from src.recorder.eeg.EEGRecorder import EEGRecorder
+from src.utils.common import AbstractTrigger, get_now
+from src.utils.logger import get_logger
 
-class RandomClick(EEGEvent):
-    def __init__(self, state_duration, random_range, key: str) -> None:
-        super().__init__(state_duration)
-        self.random_range = random_range
-        self.ahk = AHK()
-        self.time_to_wait = 0
-        self.key = key
-        self.starting_time = time.time()
-        self.is_triggered = False
-
-        self.init_key_listener()
-
-    def init_key_listener(self): 
-        key_listener = keyboard.Listener(on_press=self.on_press)
-        key_listener.daemon = True
-        key_listener.start()
-
-    def set_timer(self):
-        self.time_to_wait = random.choice(self.random_range) - self.state_duration
-
-    def on_press(self, key):
-        if self.is_triggered:
-            self.is_triggered = False
-            return
-        
-        if self.key == str(key).strip("'"):
-            print(f'You pressed {self.key}')
-            self.set_timer()
-
-    def wait(self):
-        self.set_timer()
-
-        while self.time_to_wait > 0:
-            time.sleep(1)
-            self.time_to_wait -= 1
-        
-    def trigger(self, key: str):
-        time.sleep(self.state_duration)
-
-        self.is_triggered = True
-        self.ahk.key_down(key)
-        time.sleep(0.1)
-        self.ahk.key_up(key)
-        
-        since_start = time.time() - self.starting_time
-        print(f'Triggered event at: {get_now()}, {parse_duration(since_start)} since start')
-        time.sleep(self.state_duration)
+logger = get_logger(__name__)
 
 
-@assert_udp
-@parse_filename
-@parse_range
-def main(key: str, random_range: tuple, filename: str, state_duration: int=2):
+def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
+    triggers = []
 
-    print(f'Initiating random klick {get_now()} with {locals()}')
-    event = RandomClick(state_duration, random_range, key)
-    recorder = EEGRecorder(filename, state_duration)
+    if CONFIG.randomClick:
+        triggers.append(
+            RandomClick(
+                CONFIG.randomClick.RANDOM_RANGE,
+                CONFIG.randomClick.KEY,
+                recorder_jobs,
+            )
+        )
 
-    while True:
-        event.wait()
-        recorder.background_record(key)
-        event.trigger(key)
+    if CONFIG.ssMarkers:
+        for marker in CONFIG.ssMarkers:
+            ...
+        # triggers.append(ScreenshotMarker(marker.top, marker.bottom, marker.marker, marker.delay_s))
+    return triggers
 
 
-if __name__ == '__main__':
-    fire.Fire(main)
+# @assert_udp
+def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
 
+    if randomClickOn and not CONFIG.randomClick:
+        logger.warning("Random click lacks configuration, it won't start")
+
+    if ssMarkerOn and not CONFIG.ssMarkers:
+        logger.warning("Screenshot markers lacks configuration, it won't start")
+
+    logger.info(f"Initiating In-game Trigger {get_now()}")
+
+    recorder_jobs = SharedQueue()
+
+    recorders: list[Recorder] = [
+        EEGRecorder(
+            CONFIG.general.FILENAME_PREFIX,
+            recorder_jobs.create_output_for(CONFIG.general.FILENAME_PREFIX),
+        ),
+    ]
+    triggers = init_triggers(recorder_jobs)
+
+    for recorder in recorders:
+        recorder.start()
+    for trigger in triggers:
+        print(trigger)
+        trigger.start()
+
+    try:
+        for recorder in recorders:
+            recorder.join()
+        for trigger in triggers:
+            trigger.join()
+    except KeyboardInterrupt:
+
+        for recorder in recorders:
+            recorder.join()
+        for trigger in triggers:
+            trigger.terminate()
+        logger.info("All triggers stopped by user")
+
+
+if __name__ == "__main__":
+    Fire(main)
