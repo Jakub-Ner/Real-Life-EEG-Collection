@@ -58,7 +58,7 @@ class ScreenshotMarker(AbstractTrigger):
         return np.array(ss)
 
     def run(self):
-        # sleep(10) # wait for the game to start
+        sleep(5) # wait for the game to start
         logger.info(f"Screenshot Marker started at {get_now()}")
         while True:
             ss = self.take_screenshot()

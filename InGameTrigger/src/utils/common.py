@@ -14,21 +14,5 @@ def parse_duration(duration: int | float):
     return f"{duration_minutes}:{int(duration_seconds)}"
 
 
-# TODO: Implement the following functions
-# def assert_udp(func, *args, **kwargs):
-#     def decorated_func(*args, **kwargs):
-#         try:
-#             listen_udp("test", 0.1, dialogue_box=False)
-#         except Exception as ex:
-#             raise Exception(
-#                 "UDP data acquisition failed, Make sure the UDP server is running."
-#             )
-#         finally:
-#             os.remove(f"test.csv")
-#         return func(*args, **kwargs)
-
-#     return decorated_func
-
-
 class AbstractTrigger(Process):
     def run(self): ...

@@ -42,7 +42,6 @@ def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
     return triggers
 
 
-# @assert_udp
 def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
     if randomClickOn and not CONFIG.randomClick:
         logger.warning("Random click lacks configuration, it won't start")
