@@ -6,9 +6,9 @@ Inducing a specific mental state can be challenging and time-consuming. The goal
 
 
 #### [In-game Trigger](./InGameTrigger//README.md)
-'Why not to trigger a frustration while playing League of Legends?' This is a tool for trolling the player at random intervals and recording their brain activity before and after the stimuli. Surely, the player won't be happy about that. But that's the point. I want to see how the brain reacts to the frustration.
+An app consisting of recorders (EEG, facial experssions, blinking etc.) and event triggers. The app may run in the background, enabling seamless data collection and annoattion during activities like playing games, studying or working.
 
-*Tested on League of Legends, but can be used in any other game. Please note that the program may be detected as a cheat and you may get banned.*
+*Tested on League of Legends. Please note that the program may be detected as a cheat and you may get banned.*
 
 
 #### Event Monitor (In Development)
