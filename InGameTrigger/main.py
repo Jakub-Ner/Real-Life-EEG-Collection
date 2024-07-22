@@ -2,17 +2,19 @@ from fire import Fire
 from multiprocessing import get_start_method, set_start_method
 
 from configuation import CONFIG
-from src.recorder.eeg.utils.helpers import Recorder
-from src.recorder.SharedQueue import SharedQueue
-from src.randomClick.RandomClick import RandomClick
-from src.recorder.eeg.EEGRecorder import EEGRecorder
+from src.recorders.eeg.utils.helpers import Recorder
+from src.recorders.SharedQueue import SharedQueue
+from src.triggers.randomClick.RandomClick import RandomClick
+from src.recorders.eeg.EEGRecorder import EEGRecorder
 from src.utils.common import AbstractTrigger, get_now
 from src.utils.logger import get_logger
+from src.triggers.screenshotMarker.ScreenshotMarker import ScreenshotMarker
 
-if get_start_method(allow_none=True) != 'spawn':
-    set_start_method('spawn', force=True)
+if get_start_method(allow_none=True) != "spawn":
+    set_start_method("spawn", force=True)
 
 logger = get_logger(__name__)
+
 
 def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
     triggers = []
@@ -28,8 +30,15 @@ def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
 
     if CONFIG.ssMarkers:
         for marker in CONFIG.ssMarkers:
-            ...
-        # triggers.append(ScreenshotMarker(marker.top, marker.bottom, marker.marker, marker.delay_s))
+            triggers.append(
+                ScreenshotMarker(
+                    marker.TOP,
+                    marker.BOTTOM,
+                    marker.MARKER,
+                    marker.DELAY_S,
+                    recorder_jobs,
+                )
+            )
     return triggers
 
 

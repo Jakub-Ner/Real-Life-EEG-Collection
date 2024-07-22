@@ -18,11 +18,11 @@ class EEGRecorder(Recorder):
         if not os.path.exists(CONFIG.EEG_PATH):
             os.mkdir(CONFIG.EEG_PATH)
 
-
         try:
             path = os.path.join(CONFIG.EEG_PATH, self.filename)
             self.streamer.record(path, self.jobs)
-        except KeyboardInterrupt:...
+        except KeyboardInterrupt:
+            ...
 
     def terminate(self) -> None:
         self.streamer.turn_off()

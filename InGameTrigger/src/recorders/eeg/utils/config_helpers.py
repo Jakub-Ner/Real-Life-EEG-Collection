@@ -1,17 +1,17 @@
 from dataclasses import dataclass
 from enum import Enum
-import os
 
-from src.utils.constants import DATA_PATH
 from src.utils.logger import get_logger
 
 from .helpers import StreamerConfig
 
 logger = get_logger(__name__)
 
+
 class FORMAT(Enum):
     BINARY = "binary"
     ASCII = "ascii"
+
 
 @dataclass
 class UDPConfigType(StreamerConfig):
@@ -27,7 +27,7 @@ class UDPConfigType(StreamerConfig):
 @dataclass
 class EEGConfigType:
     streamer: StreamerConfig
-    EEG_PATH: str = os.path.join(DATA_PATH, "eeg")
+    EEG_PATH: str
 
     # def __post_init__(self):
     #     logger.info(self)

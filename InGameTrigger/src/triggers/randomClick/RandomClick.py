@@ -3,11 +3,13 @@ import random
 from ahk import AHK
 import time
 from pynput import keyboard
+import logging
 
 from src.utils.common import AbstractTrigger, get_now, parse_duration
 from src.utils.logger import get_logger
 
-logger = get_logger(__name__)
+
+logger = get_logger(__name__, logging.ERROR)
 
 
 class RandomClick(AbstractTrigger):
@@ -39,7 +41,6 @@ class RandomClick(AbstractTrigger):
         except KeyboardInterrupt:
             logger.info(f"Random click stopped at: {get_now()}")
 
-
     def init_key_listener(self):
         key_listener = keyboard.Listener(on_press=self.on_press)
         key_listener.daemon = True
@@ -47,7 +48,6 @@ class RandomClick(AbstractTrigger):
 
     def set_timer(self):
         self.time_to_wait = random.choice(self.random_range)
-
 
     def on_press(self, key):
         if self.is_triggered:

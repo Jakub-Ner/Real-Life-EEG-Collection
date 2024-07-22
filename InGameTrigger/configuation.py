@@ -17,15 +17,15 @@ randomClickConfig = RandomClickConfigType(
 
 ssMarkers = [
     ScreenshotMarkerConfigType(
-        TOP=(1637, 0), BOTTOM=(1730, 25), MARKER="death", DELAY_S=0.1
+        TOP=(1637, 0), BOTTOM=(1678, 25), MARKER="death", DELAY_S=0.1
     ),
     ScreenshotMarkerConfigType(
-        TOP=(1637, 0), BOTTOM=(1730, 25), MARKER="kill", DELAY_S=0.1
+        TOP=(1680, 0), BOTTOM=(1705, 25), MARKER="kill", DELAY_S=0.1
     ),
 ]
 
 CONFIG = ConfigType(
     general=generalConfig,
     randomClick=randomClickConfig,
-    # ssMarkers=ssMarkers,
+    ssMarkers=ssMarkers,
 )

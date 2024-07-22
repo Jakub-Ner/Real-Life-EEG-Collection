@@ -1,4 +1,5 @@
 **/data/
+**/sketch.*
 
 **/__pycache__/
 **/*.pyc

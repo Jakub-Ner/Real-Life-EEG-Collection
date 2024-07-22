@@ -29,4 +29,3 @@ def get_logger(name: str, level=logging.DEBUG) -> logging.Logger:
     logger.setLevel(level)
     logger.addHandler(console_handler)
     return logger
-
