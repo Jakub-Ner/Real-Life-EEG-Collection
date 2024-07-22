@@ -7,7 +7,7 @@ logger = get_logger(__name__)
 
 
 @dataclass
-class GeneralConfig:
+class GeneralConfigType:
     FILENAME_PREFIX: str
 
     def __post_init__(self):
@@ -15,14 +15,14 @@ class GeneralConfig:
 
 
 @dataclass
-class RandomClickConfig:
+class RandomClickConfigType:
     KEY: str
     STATE_DURATION: int  # in seconds
     RANDOM_RANGE: tuple[int, int, int]  # (start, stop, step)
 
 
 @dataclass
-class ScreenshotMarkerConfig:
+class ScreenshotMarkerConfigType:
     """
     Config for the Screenshot Triggered Markers
 
@@ -40,13 +40,13 @@ class ScreenshotMarkerConfig:
 
 
 @dataclass
-class Config:
-    general: GeneralConfig
-    randomClick: RandomClickConfig | None = None
-    ssMarkers: list[ScreenshotMarkerConfig] = field(default_factory=list)
+class ConfigType:
+    general: GeneralConfigType
+    randomClick: RandomClickConfigType | None = None
+    ssMarkers: list[ScreenshotMarkerConfigType] = field(default_factory=list)
 
-    def __post_init__(self):
-        logger.info(self)
+    # def __post_init__(self):
+    #     logger.info(self)
 
     def __repr__(self) -> str:
         return f"""

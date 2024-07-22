@@ -31,12 +31,14 @@ class RandomClick(AbstractTrigger):
     def run(self):
         self.ahk = AHK()  # can't be in __init__ because it's a different process
 
-        while True:
-            print("sraka")
-            self.wait()
-            # self.recorder.insert_marker(self.key)
-            self.recorder_jobs.put(self.key)
-            self.trigger()
+        try:
+            while True:
+                self.wait()
+                self.recorder_jobs.put(self.key)
+                self.trigger()
+        except KeyboardInterrupt:
+            logger.info(f"Random click stopped at: {get_now()}")
+
 
     def init_key_listener(self):
         key_listener = keyboard.Listener(on_press=self.on_press)
@@ -46,13 +48,13 @@ class RandomClick(AbstractTrigger):
     def set_timer(self):
         self.time_to_wait = random.choice(self.random_range)
 
+
     def on_press(self, key):
         if self.is_triggered:
             self.is_triggered = False
             return
-
         if self.key == str(key).strip("'"):
-            print(f"You pressed {self.key}")
+            logger.info(f"User pressed {self.key}, timer will reset.")
             self.set_timer()
 
     def wait(self):

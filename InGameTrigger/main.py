@@ -1,4 +1,5 @@
 from fire import Fire
+from multiprocessing import get_start_method, set_start_method
 
 from configuation import CONFIG
 from src.recorder.eeg.utils.helpers import Recorder
@@ -8,8 +9,10 @@ from src.recorder.eeg.EEGRecorder import EEGRecorder
 from src.utils.common import AbstractTrigger, get_now
 from src.utils.logger import get_logger
 
-logger = get_logger(__name__)
+if get_start_method(allow_none=True) != 'spawn':
+    set_start_method('spawn', force=True)
 
+logger = get_logger(__name__)
 
 def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
     triggers = []
@@ -32,7 +35,6 @@ def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
 
 # @assert_udp
 def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
-
     if randomClickOn and not CONFIG.randomClick:
         logger.warning("Random click lacks configuration, it won't start")
 
@@ -54,7 +56,6 @@ def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
     for recorder in recorders:
         recorder.start()
     for trigger in triggers:
-        print(trigger)
         trigger.start()
 
     try:
@@ -65,7 +66,7 @@ def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
     except KeyboardInterrupt:
 
         for recorder in recorders:
-            recorder.join()
+            recorder.terminate()
         for trigger in triggers:
             trigger.terminate()
         logger.info("All triggers stopped by user")
