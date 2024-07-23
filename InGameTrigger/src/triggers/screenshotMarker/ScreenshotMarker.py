@@ -1,33 +1,27 @@
-from multiprocessing import Queue
+from multiprocessing import Process, Queue
 import pyautogui
 from time import sleep
 import numpy as np
 
-from src.utils.common import AbstractTrigger, get_now
 from src.utils.logger import get_logger
-
+from .config_helpers import ScreenshotMarkerConfigType
 
 logger = get_logger(__name__)
 
 EPSILON = 0.01
 
 
-class ScreenshotMarker(AbstractTrigger):
+class ScreenshotMarker(Process):
     def __init__(
         self,
-        top: tuple[int, int],
-        bottom: tuple[int, int],
-        marker: str,
-        delay_s: float,
+        config: ScreenshotMarkerConfigType,
         recorder_jobs: Queue,
     ) -> None:
         super().__init__()
-        self.top = top
-        self.bottom = bottom
-        self.width = self.bottom[0] - self.top[0]
-        self.height = self.bottom[1] - self.top[1]
-        self.marker = marker
-        self.delay_s = delay_s
+        self.config = config
+
+        self.width = self.config.BOTTOM[0] - self.config.TOP[0]
+        self.height = self.config.BOTTOM[1] - self.config.TOP[1]
         self.recorder_jobs = recorder_jobs
         self.previous_ss = None
         self.counter = 0
@@ -46,8 +40,8 @@ class ScreenshotMarker(AbstractTrigger):
         ss = (
             pyautogui.screenshot(
                 region=(
-                    self.top[0],
-                    self.top[1],
+                    self.config.TOP[0],
+                    self.config.TOP[1],
                     self.width,
                     self.height,
                 )
@@ -58,11 +52,14 @@ class ScreenshotMarker(AbstractTrigger):
         return np.array(ss)
 
     def run(self):
-        sleep(5) # wait for the game to start
-        logger.info(f"Screenshot Marker started at {get_now()}")
-        while True:
-            ss = self.take_screenshot()
-            if self.ss_changed(ss):
-                self.recorder_jobs.put(self.marker)
-                logger.info(f"Screenshot marker {self.marker} triggered")
-            sleep(self.delay_s)
+        try:
+            sleep(5)  # wait for the game to start
+            logger.info(f"Screenshot Marker has started")
+            while True:
+                ss = self.take_screenshot()
+                if self.ss_changed(ss):
+                    self.recorder_jobs.put(self.config.MARKER)
+                    logger.info(f"Screenshot marker {self.config.MARKER} triggered")
+                sleep(self.config.DELAY_S)
+        except KeyboardInterrupt:
+            logger.info(f"Screenshot Marker has stopped")

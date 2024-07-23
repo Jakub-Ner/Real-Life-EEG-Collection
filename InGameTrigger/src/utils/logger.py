@@ -20,6 +20,7 @@ class ColoredFormatter(logging.Formatter):
 
 
 def get_logger(name: str, level=logging.DEBUG) -> logging.Logger:
+    name = name.split(".")[-1]
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(
         ColoredFormatter("%(asctime)s::%(name)s:: %(levelname)s: %(message)s")

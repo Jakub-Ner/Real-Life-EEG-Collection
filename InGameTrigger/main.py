@@ -1,64 +1,44 @@
 from fire import Fire
-from multiprocessing import get_start_method, set_start_method
+from multiprocessing import Process
 
 from configuation import CONFIG
-from src.recorders.eeg.utils.helpers import Recorder
-from src.recorders.SharedQueue import SharedQueue
-from src.triggers.randomClick.RandomClick import RandomClick
-from src.recorders.eeg.EEGRecorder import EEGRecorder
-from src.utils.common import AbstractTrigger, get_now
+from src.utils.SharedQueue import SharedQueue
 from src.utils.logger import get_logger
-from src.triggers.screenshotMarker.ScreenshotMarker import ScreenshotMarker
-
-if get_start_method(allow_none=True) != "spawn":
-    set_start_method("spawn", force=True)
 
 logger = get_logger(__name__)
 
 
-def init_triggers(recorder_jobs) -> list[AbstractTrigger]:
+def init_triggers(recorder_jobs: SharedQueue) -> list[Process]:
     triggers = []
 
-    if CONFIG.randomClick:
+    for trigger_config in CONFIG.triggers:
         triggers.append(
-            RandomClick(
-                CONFIG.randomClick.RANDOM_RANGE,
-                CONFIG.randomClick.KEY,
+            trigger_config.CLASS(
+                trigger_config.CONFIG,
                 recorder_jobs,
             )
         )
-
-    if CONFIG.ssMarkers:
-        for marker in CONFIG.ssMarkers:
-            triggers.append(
-                ScreenshotMarker(
-                    marker.TOP,
-                    marker.BOTTOM,
-                    marker.MARKER,
-                    marker.DELAY_S,
-                    recorder_jobs,
-                )
-            )
     return triggers
 
 
-def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
-    if randomClickOn and not CONFIG.randomClick:
-        logger.warning("Random click lacks configuration, it won't start")
+def init_recorders(recorder_jobs: SharedQueue) -> list[Process]:
+    recorders = []
+    for recorder_config in CONFIG.recorders:
+        recorders.append(
+            recorder_config.CLASS(
+                recorder_config.CONFIG,
+                recorder_jobs.create_output_for(recorder_config.CLASS.__name__),
+            )
+        )
+    return recorders
 
-    if ssMarkerOn and not CONFIG.ssMarkers:
-        logger.warning("Screenshot markers lacks configuration, it won't start")
 
-    logger.info(f"Initiating In-game Trigger {get_now()}")
+def main():
+    logger.info(f"Initiating In-game Trigger")
 
     recorder_jobs = SharedQueue()
 
-    recorders: list[Recorder] = [
-        EEGRecorder(
-            CONFIG.general.FILENAME_PREFIX,
-            recorder_jobs.create_output_for(CONFIG.general.FILENAME_PREFIX),
-        ),
-    ]
+    recorders = init_recorders(recorder_jobs)
     triggers = init_triggers(recorder_jobs)
 
     for recorder in recorders:
@@ -71,8 +51,8 @@ def main(randomClickOn: bool | None = None, ssMarkerOn: bool | None = None):
             recorder.join()
         for trigger in triggers:
             trigger.join()
-    except KeyboardInterrupt:
 
+    except KeyboardInterrupt:
         for recorder in recorders:
             recorder.terminate()
         for trigger in triggers:

@@ -1,4 +1,3 @@
-from multiprocessing import Process
 import time
 
 
@@ -12,7 +11,3 @@ def parse_duration(duration: int | float):
     duration_minutes = duration // 60
     duration_seconds = duration % 60
     return f"{duration_minutes}:{int(duration_seconds)}"
-
-
-class AbstractTrigger(Process):
-    def run(self): ...
