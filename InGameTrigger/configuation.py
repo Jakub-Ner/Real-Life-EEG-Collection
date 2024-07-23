@@ -22,7 +22,7 @@ general_config = GeneralConfigType(
 eeg_udp_config = EegUdpConfig(
     IP="127.0.0.1",
     PORT=1000,
-    OUT_PATH=os.path.join(general_config.DATA_PATH, 'eeg_udp'),
+    OUT_PATH=os.path.join(general_config.DATA_PATH, "eeg_udp"),
     FILENAME=general_config.FILENAME_PREFIX,
     CONNECTION_TIMEOUT=4,  # in seconds
     BUFFER_BYTE_SIZE=1024,
@@ -32,10 +32,9 @@ eeg_udp_config = EegUdpConfig(
 
 camera_config = CameraConfig(
     DATA_PATH=os.path.join(
-        os.path.join(general_config.DATA_PATH, 'video'), 
-        general_config.FILENAME_PREFIX),
-    DELAY=0.5,
-
+        os.path.join(general_config.DATA_PATH, "video"), general_config.FILENAME_PREFIX
+    ),
+    DURATION=2.0,
 )
 recorders = [
     FactoryType(
@@ -45,7 +44,7 @@ recorders = [
     FactoryType(
         CLASS=CameraRecorder,
         CONFIG=camera_config,
-    )
+    ),
 ]
 
 triggers = [
