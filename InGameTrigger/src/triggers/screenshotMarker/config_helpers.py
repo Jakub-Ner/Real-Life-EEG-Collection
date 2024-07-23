@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ScreenshotMarkerConfigType:
+class ScreenshotMarkerConfig:
     """
     Config for the Screenshot Triggered Markers
 

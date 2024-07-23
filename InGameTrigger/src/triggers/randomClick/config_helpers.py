@@ -2,6 +2,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class RandomClickConfigType:
+class RandomClickConfig:
     KEY: str
     RANDOM_RANGE: tuple[int, int, int]  # (start, stop, step)

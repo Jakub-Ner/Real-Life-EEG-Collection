@@ -6,13 +6,13 @@ import logging
 
 from src.utils.logger import get_logger
 from .helpers import connect_to_udp_socket
-from .config_helpers import FORMAT, UDPConfigType
+from .config_helpers import FORMAT, UDPConfig
 
 logger = get_logger(__name__, logging.INFO)
 
 
 class EegUdpRecorder(Process):
-    def __init__(self, config: UDPConfigType, jobs: Queue):
+    def __init__(self, config: UDPConfig, jobs: Queue):
         super().__init__()
         self.config = config
         self.jobs = jobs

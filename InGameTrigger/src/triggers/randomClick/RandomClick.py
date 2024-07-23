@@ -7,7 +7,7 @@ import logging
 
 from src.utils.common import parse_duration
 from src.utils.logger import get_logger
-from .config_helpers import RandomClickConfigType
+from .config_helpers import RandomClickConfig
 
 logger = get_logger(__name__, logging.ERROR)
 
@@ -15,7 +15,7 @@ logger = get_logger(__name__, logging.ERROR)
 class RandomClick(Process):
     def __init__(
         self,
-        config: RandomClickConfigType,
+        config: RandomClickConfig,
         recorder_jobs: Queue,
     ) -> None:
         super().__init__()

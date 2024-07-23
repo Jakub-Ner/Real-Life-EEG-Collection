@@ -12,7 +12,7 @@ class FORMAT(Enum):
 
 
 @dataclass
-class UDPConfigType:
+class UDPConfig:
     IP: str
     PORT: int
     OUT_PATH: str

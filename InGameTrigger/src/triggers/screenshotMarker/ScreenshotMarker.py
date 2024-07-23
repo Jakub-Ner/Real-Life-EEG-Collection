@@ -4,7 +4,7 @@ from time import sleep
 import numpy as np
 
 from src.utils.logger import get_logger
-from .config_helpers import ScreenshotMarkerConfigType
+from .config_helpers import ScreenshotMarkerConfig
 
 logger = get_logger(__name__)
 
@@ -14,7 +14,7 @@ EPSILON = 0.01
 class ScreenshotMarker(Process):
     def __init__(
         self,
-        config: ScreenshotMarkerConfigType,
+        config: ScreenshotMarkerConfig,
         recorder_jobs: Queue,
     ) -> None:
         super().__init__()
