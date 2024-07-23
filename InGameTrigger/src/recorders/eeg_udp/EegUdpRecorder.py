@@ -6,13 +6,13 @@ import logging
 
 from src.utils.logger import get_logger
 from .helpers import connect_to_udp_socket
-from .config_helpers import FORMAT, UDPConfig
+from .config_helpers import FORMAT, EegUdpConfig
 
 logger = get_logger(__name__, logging.INFO)
 
 
 class EegUdpRecorder(Process):
-    def __init__(self, config: UDPConfig, jobs: Queue):
+    def __init__(self, config: EegUdpConfig, jobs: Queue):
         super().__init__()
         self.config = config
         self.jobs = jobs
@@ -34,6 +34,7 @@ class EegUdpRecorder(Process):
             return message + marker_column.encode("ascii")
 
     def run(self):
+        os.makedirs(self.config.OUT_PATH, exist_ok=True)
         self.record(os.path.join(self.config.OUT_PATH, self.config.FILENAME))
 
     def record(self, path: str):
