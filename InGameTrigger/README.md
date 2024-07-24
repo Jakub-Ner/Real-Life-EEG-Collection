@@ -2,14 +2,19 @@
 
 ## Available Recorders
 
-Recorder is a Process that listens for incoming events emited by triggers. It is responsible for collecting and annotating data. You can run multiple recorders at the same time.
+**Recorder** is a Process that listens for incoming events emited by **Triggers**. It is responsible for collecting and annotating data. You can run multiple recorders at the same time.
 
-### EEG Recorder
-Wrapper around EEG Streamer. Currently only UDPStreamer is implemented.
+### EegUdp Recorder
+This recorder listens for incoming EEG data. It adds a column to the data and if the event is triggered, it annotates the data with the event name. The data is saved in a CSV file.
+
+### Camera Recorder
+After the event is triggered, the camera records the user's reaction. 
+
+<br>
 
 ## Available Triggers
 
-A trigger is a process that creates events based on certain inputs. These inputs can come from a user (like facial expressions), a game (such as a scoreboard update), or the trigger itself (like simulating a button click). You can have several triggers running simultaneously.
+A **Trigger** is a process that creates events based on certain inputs. These inputs can come from a user (like his facial expressions), a game (such as a scoreboard update), or the trigger itself (like simulating a button click). You can have several Triggers running simultaneously.
 
 ### Screenshot Triggered Markers
 <img src="../imgs/kills-deaths-assits.png" alt="KDA" width="100" >
@@ -28,8 +33,10 @@ After specifying the region, the process takes screenshots at a fixed interval a
 This option enables to trigger an event (like Flash) at random intervals. The user can specify the range of the intervals and the key to be pressed. In this way, the user can simulate a real-life scenario where the player is trolled by the game.
 
 
-### Usage
+## Usage
+1. Install dependencies - `pip install -r requirements.txt`
+2. Configure the triggers and recorders in the [configuration.py](./configuation.py) file.
+3. Run the main script - `python main.py`
 
-```shell
-python ./main.py
-```
+## Development
+Each Trigger and Recorder requires 2 classes - one that configures the process and another that runs the process. The configuration class is responsible for setting up the process, while the running class is responsible for executing the process. To run the feature, You need to wrap these classes with [Factory](./src/utils/config_helpers.py) inside [configuration.py](./configuation.py).

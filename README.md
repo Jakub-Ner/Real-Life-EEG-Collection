@@ -6,10 +6,10 @@ Inducing a specific mental state can be challenging and time-consuming. The goal
 
 
 #### [In-game Trigger](./InGameTrigger//README.md)
-An app consisting of recorders (EEG, facial experssions, blinking etc.) and event triggers. The app may run in the background, enabling seamless data collection and annoattion during activities like playing games, studying or working.
+An app consisting of recorders (EEG, Video, Screen etc.) and event triggers. The app may run in the background, enabling seamless data collection and annoattion during activities like playing games, studying or working.
 
 *Tested on League of Legends. Please note that the program may be detected as a cheat and you may get banned.*
 
 
-#### Event Monitor (In Development)
+#### Event Monitor (In Future)
 Tool for seamless recording (EEG, markers and video) analysis and markers preview and edition.

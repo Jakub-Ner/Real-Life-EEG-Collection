@@ -5,7 +5,7 @@ from src.recorders.eeg_udp.EegUdpRecorder import EegUdpRecorder
 from src.recorders.eeg_udp.config_helpers import FORMAT, EegUdpConfig
 from src.utils.config_helpers import (
     ConfigType,
-    FactoryType,
+    Factory,
     GeneralConfigType,
 )
 from src.triggers.randomClick.RandomClick import RandomClick
@@ -37,28 +37,28 @@ camera_config = CameraConfig(
     DURATION=2.0,
 )
 recorders = [
-    FactoryType(
+    Factory(
         CLASS=EegUdpRecorder,
         CONFIG=eeg_udp_config,
     ),
-    FactoryType(
+    Factory(
         CLASS=CameraRecorder,
         CONFIG=camera_config,
     ),
 ]
 
 triggers = [
-    FactoryType(
+    Factory(
         CLASS=RandomClick,
         CONFIG=RandomClickConfig(KEY="d", RANDOM_RANGE=(300, 320, 1)),
     ),
-    FactoryType(
+    Factory(
         CLASS=ScreenshotMarker,
         CONFIG=ScreenshotMarkerConfig(
             TOP=(1637, 0), BOTTOM=(1678, 25), MARKER="kill", DELAY_S=0.1
         ),
     ),
-    FactoryType(
+    Factory(
         CLASS=ScreenshotMarker,
         CONFIG=ScreenshotMarkerConfig(
             TOP=(1680, 0), BOTTOM=(1705, 25), MARKER="death", DELAY_S=0.1

@@ -17,7 +17,7 @@ class GeneralConfigType:
 
 
 @dataclass
-class FactoryType:
+class Factory:
     CLASS: type
     CONFIG: Any
 
@@ -25,8 +25,8 @@ class FactoryType:
 @dataclass
 class ConfigType:
     general: GeneralConfigType
-    recorders: list[FactoryType]
-    triggers: list[FactoryType]
+    recorders: list[Factory]
+    triggers: list[Factory]
 
     # def __post_init__(self):
     #     logger.info(self)
