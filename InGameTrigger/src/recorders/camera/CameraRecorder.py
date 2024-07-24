@@ -9,6 +9,7 @@ from .config_helpers import CameraConfig
 
 logger = get_logger(__name__)
 
+
 class CameraRecorder(Process):
     def __init__(self, config: CameraConfig, jobs: Queue):
         super().__init__()
@@ -16,7 +17,6 @@ class CameraRecorder(Process):
         self.jobs = jobs
         self.frames_count = 0
         self.tmp_filename = os.path.join(self.config.DATA_PATH, "tmp.avi")
-
 
     def run(self):
         os.makedirs(self.config.DATA_PATH, exist_ok=True)
@@ -30,7 +30,9 @@ class CameraRecorder(Process):
 
         try:
             while True:
-                out = cv2.VideoWriter(self.tmp_filename, fourcc, 20.0, (640, 480))
+                out = cv2.VideoWriter(
+                    self.tmp_filename, fourcc, self.config.FPS, (640, 480)
+                )
                 marker = self.jobs.get()
 
                 start = time.time()
