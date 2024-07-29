@@ -1,6 +1,6 @@
 # Mind-Collector
 
-A Pipeline suited for real-time EEG data acquisition and event annotation. The pipeline is composed of **Triggers** and **Recorders**. **Triggers** are responsible for creating events, while **Recorders** are responsible for collecting and annotating data. The pipeline is designed to be modular, so you can easily add new **Triggers** and **Recorders**.
+A Pipeline suited for psychophysiological data acquisition and event annotation. The pipeline is composed of **Triggers** and **Recorders**. **Triggers** are responsible for creating events, while **Recorders** are responsible for collecting and annotating data. The pipeline is designed to be modular, so you can easily add new **Triggers** and **Recorders**.
 
 ![Mind-Collector Pipeline](../imgs/pipeline.png)
 
