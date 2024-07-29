@@ -11,12 +11,20 @@ logger = get_logger(__name__)
 
 
 class CameraRecorder(Process):
+    """
+    If many markers are detected in a short (<= DURATION) period of time, the camera recorder will 
+    record a video only for the first one. The others will be discarded from the queue.
+    """
     def __init__(self, config: CameraConfig, jobs: Queue):
         super().__init__()
         self.config = config
         self.jobs = jobs
         self.frames_count = 0
         self.tmp_filename = os.path.join(self.config.DATA_PATH, "tmp.avi")
+
+    def clear_queue(self):
+        while not self.jobs.empty():
+            self.jobs.get()
 
     def run(self):
         os.makedirs(self.config.DATA_PATH, exist_ok=True)
@@ -42,6 +50,7 @@ class CameraRecorder(Process):
                         continue
                     out.write(frame)
 
+                self.clear_queue()
                 out.release()
                 self.frames_count += 1
                 frame_path = os.path.join(
