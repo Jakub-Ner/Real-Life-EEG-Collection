@@ -2,9 +2,9 @@ from dataclasses import dataclass
 
 
 @dataclass
-class CameraConfig:
+class ScreenConfig:
     DATA_PATH: str
     FILENAME: str
-    RESOLUTION: tuple[int, int] = (640, 480)
     DURATION: float = 3.0
-    FPS: int = 20
+    RESOLUTION: tuple[int, int] = (1920, 1080)
+    FPS: int = 16

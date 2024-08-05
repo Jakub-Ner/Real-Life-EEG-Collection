@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import os
 from typing import Any
 
 from .common import get_now
@@ -14,6 +15,9 @@ class GeneralConfigType:
 
     def __post_init__(self):
         self.FILENAME_PREFIX = f"{self.FILENAME_PREFIX}_{get_now(True)}"
+
+    def get_full_path(self):
+        return os.path.join(self.DATA_PATH, self.FILENAME_PREFIX)
 
 
 @dataclass

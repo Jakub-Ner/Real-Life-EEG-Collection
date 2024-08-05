@@ -1,6 +1,5 @@
 import cv2
 import os
-import time
 from tkinter import messagebox
 from multiprocessing import Process, Queue
 
@@ -12,19 +11,13 @@ logger = get_logger(__name__)
 
 class CameraRecorder(Process):
     """
-    If many markers are detected in a short (<= DURATION) period of time, the camera recorder will 
-    record a video only for the first one. The others will be discarded from the queue.
+    Camera is recording throughout the whole session.
     """
+
     def __init__(self, config: CameraConfig, jobs: Queue):
         super().__init__()
         self.config = config
-        self.jobs = jobs
-        self.frames_count = 0
-        self.tmp_filename = os.path.join(self.config.DATA_PATH, "tmp.avi")
-
-    def clear_queue(self):
-        while not self.jobs.empty():
-            self.jobs.get()
+        self.path = os.path.join(self.config.DATA_PATH, self.config.FILENAME)
 
     def run(self):
         os.makedirs(self.config.DATA_PATH, exist_ok=True)
@@ -37,27 +30,16 @@ class CameraRecorder(Process):
         fourcc = cv2.VideoWriter_fourcc(*"XVID")  # type: ignore
 
         try:
+            out = cv2.VideoWriter(
+                self.path, fourcc, self.config.FPS, self.config.RESOLUTION
+            )
+
             while True:
-                out = cv2.VideoWriter(
-                    self.tmp_filename, fourcc, self.config.FPS, (640, 480)
-                )
-                marker = self.jobs.get()
+                ret, frame = camera.read()
+                if not ret:
+                    continue
+                out.write(frame)
 
-                start = time.time()
-                while time.time() - start < self.config.DURATION:
-                    ret, frame = camera.read()
-                    if not ret:
-                        continue
-                    out.write(frame)
-
-                self.clear_queue()
-                out.release()
-                self.frames_count += 1
-                frame_path = os.path.join(
-                    self.config.DATA_PATH, f"{self.frames_count}-{marker}.avi"
-                )
-                os.rename(self.tmp_filename, frame_path)
         except KeyboardInterrupt:
-            os.remove(self.tmp_filename)
             camera.release()
             logger.info("Camera recorder has stopped")

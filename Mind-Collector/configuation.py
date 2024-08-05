@@ -1,5 +1,7 @@
-import os
-from src.recorders.camera.CameraRecorder import CameraRecorder
+from src.recorders.screen.ScreenRecorder import ScreenRecorder
+from src.recorders.screen.config_helpers import ScreenConfig
+
+# from src.recorders.camera.CameraRecorder import CameraRecorder
 from src.recorders.camera.config_helpers import CameraConfig
 from src.recorders.eeg_udp.EegUdpRecorder import EegUdpRecorder
 from src.recorders.eeg_udp.config_helpers import FORMAT, EegUdpConfig
@@ -22,8 +24,8 @@ general_config = GeneralConfigType(
 eeg_udp_config = EegUdpConfig(
     IP="127.0.0.1",
     PORT=1000,
-    OUT_PATH=os.path.join(general_config.DATA_PATH, "eeg_udp"),
-    FILENAME=general_config.FILENAME_PREFIX,
+    OUT_PATH=general_config.get_full_path(),
+    FILENAME="eeg.csv",
     CONNECTION_TIMEOUT=4,  # in seconds
     BUFFER_BYTE_SIZE=1024,
     COL_SEPARATOR=",",
@@ -31,26 +33,26 @@ eeg_udp_config = EegUdpConfig(
 )
 
 camera_config = CameraConfig(
-    DATA_PATH=os.path.join(
-        os.path.join(general_config.DATA_PATH, "video"), general_config.FILENAME_PREFIX
-    ),
+    DATA_PATH=general_config.get_full_path(),
+    FILENAME="camera.avi",
     DURATION=2.0,
 )
+
+screen_config = ScreenConfig(
+    DATA_PATH=general_config.get_full_path(),
+    FILENAME="screen.avi",
+)
+
 recorders = [
-    Factory(
-        CLASS=EegUdpRecorder,
-        CONFIG=eeg_udp_config,
-    ),
-    Factory(
-        CLASS=CameraRecorder,
-        CONFIG=camera_config,
-    ),
+    Factory(CLASS=EegUdpRecorder, CONFIG=eeg_udp_config),
+    # Factory(CLASS=CameraRecorder, CONFIG=camera_config),
+    Factory(CLASS=ScreenRecorder, CONFIG=screen_config),
 ]
 
 triggers = [
     Factory(
         CLASS=RandomClick,
-        CONFIG=RandomClickConfig(KEY="d", RANDOM_RANGE=(300, 320, 1)),
+        CONFIG=RandomClickConfig(KEY="d", RANDOM_RANGE=range(300, 320, 1)),
     ),
     Factory(
         CLASS=ScreenshotMarker,

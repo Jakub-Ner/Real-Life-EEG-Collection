@@ -39,8 +39,8 @@ class EegUdpRecorder(Process):
 
     def record(self, path: str):
         file_mode = "w+" if self.config.OUTPUT_FORMAT == FORMAT.ASCII else "wb+"
-        self.file = open(f"{path}.csv", file_mode)
-        logger.debug("Saving to " + path + ".csv")
+        self.file = open(path, file_mode)
+        logger.debug("Saving to " + path)
 
         try:
             udp_socket = connect_to_udp_socket(
