@@ -12,7 +12,7 @@ def show_statistics(markers):
 
 def read_eeg_data(path) -> tuple[np.ndarray, pd.Series]:
   df = pd.read_csv(path)
-  markers = df.iloc[:, -1]
+  markers = df.iloc[:, -1].astype(str)
   data = df.iloc[:, 16:56] / 30.0 # take only alpha, beta, gamma and normalize values to 0-1
   return data.to_numpy(), markers
 
@@ -46,7 +46,7 @@ def extract_event_types(markers):
   return u[u != '0']
 
 def get_prefix(path):
-  return f"{path.split('/')[-1].split('.')[0]}"
+  return f"{path.split('/')[-2].split('.')[0]}"
 
 def save_images(imgs: list[np.ndarray], out_folder: str, prefix: str):
     os.makedirs(out_folder, exist_ok=True)
