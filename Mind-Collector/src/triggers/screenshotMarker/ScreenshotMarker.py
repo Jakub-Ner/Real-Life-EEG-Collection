@@ -2,7 +2,7 @@ from multiprocessing import Process, Queue
 import pyautogui
 from time import sleep
 import numpy as np
-
+import cv2
 from src.utils.logger import get_logger
 from .config_helpers import ScreenshotMarkerConfig
 
@@ -59,6 +59,13 @@ class ScreenshotMarker(Process):
                 ss = self.take_screenshot()
                 if self.ss_changed(ss):
                     self.recorder_jobs.put(self.config.MARKER)
+                    if self.config.SAVE_SS:
+                        cv2.imwrite(
+                            f"{self.config.OUT_PATH}/{self.config.MARKER}_{self.counter}.png",
+                            ss,
+                        )
+                        self.counter += 1
+
                     logger.info(f"Screenshot marker {self.config.MARKER} triggered")
                 sleep(self.config.DELAY_S)
         except KeyboardInterrupt:

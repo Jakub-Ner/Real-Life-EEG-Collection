@@ -9,7 +9,7 @@ from src.utils.common import parse_duration
 from src.utils.logger import get_logger
 from .config_helpers import RandomClickConfig
 
-logger = get_logger(__name__, logging.ERROR)
+logger = get_logger(__name__, logging.INFO)
 
 
 class RandomClick(Process):
@@ -52,7 +52,7 @@ class RandomClick(Process):
             self.is_triggered = False
             return
         if self.config.KEY == str(key).strip("'"):
-            logger.info(f"User pressed {self.config.KEY}, timer will reset.")
+            logger.debug(f"User pressed {self.config.KEY}, timer will reset.")
             self.set_timer()
 
     def wait(self):
