@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import cv2
 import os
 from fire import Fire
+from glob import glob
 
 def show_statistics(markers):
   marker_names = np.unique(markers)
@@ -11,7 +12,7 @@ def show_statistics(markers):
     print(f"Marker {marker_name}:", markers[markers == marker_name].count())
 
 def read_eeg_data(path) -> tuple[np.ndarray, pd.Series]:
-  df = pd.read_csv(path)
+  df = pd.read_csv(path, low_memory=False)
   markers = df.iloc[:, -1].astype(str)
   data = df.iloc[:, 16:56] / 30.0 # take only alpha, beta, gamma and normalize values to 0-1
   return data.to_numpy(), markers
@@ -65,5 +66,14 @@ def extract_heatmaps(eeg_path: str, out_folder: str='./data/heatmaps', duration:
     imgs = prepare_images(data, channels, markers, event, duration)
     save_images(imgs, os.path.join(out_folder, event), get_prefix(eeg_path))
 
+def extract_heatmaps_for_all_files(eeg_folder: str, out_folder: str='./data/heatmaps', duration: int=20, channels: list[int]=[1,2,3,4]):
+    for eeg_path in glob(os.path.join(eeg_folder, '*/*.csv')):
+      print(f"Processing {eeg_path}")
+      extract_heatmaps(eeg_path, out_folder, duration, channels)
+      print()
+
 if __name__ == '__main__':
-  Fire(extract_heatmaps)
+  Fire({
+     'ONE': extract_heatmaps,
+     'ALL': extract_heatmaps_for_all_files
+  })
