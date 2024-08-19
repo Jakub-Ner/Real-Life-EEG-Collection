@@ -11,8 +11,14 @@ A Pipeline suited for psychophysiological data acquisition and event annotation.
 ### EegUdp Recorder
 This recorder listens for incoming EEG data. It adds a column to the data and if the event is triggered, it annotates the data with the event name. The data is saved in a CSV file.
 
-### Camera Recorder
+### Camera Recorder *(only one camera recorder may run at a time)*
+Records a video from the user's camera. The video is saved in a .avi file.
+
+### Camera Triggered Recorder *(only one camera recorder may run at a time)*
 After the event is triggered, the camera records the user's reaction. 
+
+### Screen Recorder
+This recorder takes screenshots of the user's screen throught the whole experiment.
 
 <br>
 
