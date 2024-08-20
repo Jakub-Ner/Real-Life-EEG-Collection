@@ -1,3 +1,4 @@
+from src.recorders.eeg_lsl.config_helpers import EegLslConfig
 from src.recorders.screen.config_helpers import ScreenConfig
 from src.recorders.screen.ScreenRecorder import ScreenRecorder
 
@@ -11,6 +12,8 @@ from src.utils.config_helpers import (
     Factory,
     GeneralConfigType,
 )
+
+from src.recorders.eeg_lsl.EegLSLRecorder import EegLSLRecorder
 
 from src.triggers.randomClick.config_helpers import RandomClickConfig
 from src.triggers.randomClick.RandomClick import RandomClick
@@ -42,6 +45,12 @@ eeg_udp_config = EegUdpConfig(
     OUTPUT_FORMAT=FORMAT.ASCII,
 )
 
+eeg_lsl_config = EegLslConfig(
+    STREAM_NAME="Cortex PSD",
+    DATA_PATH=general_config.get_full_path(),
+    FILENAME="eeg_lsl.csv",
+)
+
 camera_config = CameraConfig(
     DATA_PATH=general_config.get_full_path(),
     FILENAME="camera.avi",
@@ -54,7 +63,8 @@ screen_config = ScreenConfig(
 )
 
 recorders = [
-    Factory(CLASS=EegUdpRecorder, CONFIG=eeg_udp_config),
+    #Factory(CLASS=EegUdpRecorder, CONFIG=eeg_udp_config),
+    Factory(CLASS=EegLSLRecorder, CONFIG=eeg_lsl_config),
     Factory(CLASS=CameraRecorder, CONFIG=camera_config),
     Factory(CLASS=ScreenRecorder, CONFIG=screen_config),
 ]

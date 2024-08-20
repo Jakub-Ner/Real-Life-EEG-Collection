@@ -1,7 +1,7 @@
 from fire import Fire
 from multiprocessing import Process
 
-from configuation import CONFIG
+from configuration import CONFIG
 from src.utils.SharedQueue import SharedQueue
 from src.utils.logger import get_logger
 
