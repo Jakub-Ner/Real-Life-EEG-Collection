@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import os
+import json
 from typing import Any
 
 from .common import get_now
@@ -12,9 +13,18 @@ logger = get_logger(__name__)
 class GeneralConfigType:
     DATA_PATH: str
     FILENAME_PREFIX: str
+    META_DATA: dict|None = None
 
     def __post_init__(self):
         self.FILENAME_PREFIX = f"{self.FILENAME_PREFIX}_{get_now(True)}"
+
+    def initialize(self):
+
+        os.makedirs(self.get_full_path())
+
+        if self.META_DATA is not None:
+            with open(os.path.join(self.get_full_path(), 'meta.json'), "w+") as f:
+                json.dump(self.META_DATA, f, indent=2)
 
     def get_full_path(self):
         return os.path.join(self.DATA_PATH, self.FILENAME_PREFIX)

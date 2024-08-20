@@ -61,12 +61,12 @@ class ScreenshotMarker(Process):
                     self.recorder_jobs.put(self.config.MARKER)
                     if self.config.SAVE_SS:
                         cv2.imwrite(
-                            f"{self.config.OUT_PATH}/{self.config.MARKER}_{self.counter}.png",
+                            f"{self.config.DATA_PATH}/{self.config.EVENT_NAME}_{self.counter}.png",
                             ss,
                         )
                         self.counter += 1
 
-                    logger.info(f"Screenshot marker {self.config.MARKER} triggered")
+                    logger.info(f"Screenshot marker {self.config.EVENT_NAME} triggered")
                 sleep(self.config.DELAY_S)
         except KeyboardInterrupt:
             logger.info(f"Screenshot Marker has stopped")

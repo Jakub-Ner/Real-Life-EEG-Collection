@@ -34,8 +34,8 @@ class EegUdpRecorder(Process):
             return message + marker_column.encode("ascii")
 
     def run(self):
-        os.makedirs(self.config.OUT_PATH, exist_ok=True)
-        self.record(os.path.join(self.config.OUT_PATH, self.config.FILENAME))
+        os.makedirs(self.config.DATA_PATH, exist_ok=True)
+        self.record(os.path.join(self.config.DATA_PATH, self.config.FILENAME))
 
     def record(self, path: str):
         file_mode = "w+" if self.config.OUTPUT_FORMAT == FORMAT.ASCII else "wb+"

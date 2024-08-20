@@ -16,6 +16,7 @@ class ScreenshotMarkerConfig:
     TOP: tuple[int, int]
     BOTTOM: tuple[int, int]
     MARKER: str
-    OUT_PATH: str
+    EVENT_NAME: str
+    DATA_PATH: str
     SAVE_SS: bool = True
     DELAY_S: float = 0.1

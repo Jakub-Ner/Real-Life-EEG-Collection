@@ -15,7 +15,7 @@ class FORMAT(Enum):
 class EegUdpConfig:
     IP: str
     PORT: int
-    OUT_PATH: str
+    DATA_PATH: str
     FILENAME: str
     CONNECTION_TIMEOUT: int = 4  # in seconds
     BUFFER_BYTE_SIZE: int = 1024

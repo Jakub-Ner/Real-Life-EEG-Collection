@@ -34,7 +34,7 @@ class RandomClick(Process):
         try:
             while True:
                 self.wait()
-                self.recorder_jobs.put(self.config.KEY)
+                self.recorder_jobs.put(self.config.MARKER)
                 self.trigger()
         except KeyboardInterrupt:
             logger.info(f"Random click has stopped")

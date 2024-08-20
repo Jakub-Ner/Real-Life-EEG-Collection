@@ -36,6 +36,7 @@ def init_recorders(recorder_jobs: SharedQueue) -> list[Process]:
 def main():
     logger.info(f"Initiating In-game Trigger")
 
+    CONFIG.general.initialize() 
     recorder_jobs = SharedQueue()
 
     recorders = init_recorders(recorder_jobs)
