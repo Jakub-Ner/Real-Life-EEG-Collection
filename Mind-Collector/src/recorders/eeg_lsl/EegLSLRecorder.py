@@ -7,6 +7,7 @@ import numpy as np
 from queue import Empty
 from tkinter import messagebox
 import logging
+import json
 
 from pylsl import resolve_stream, StreamInlet, pylsl
 
@@ -15,6 +16,11 @@ from .config_helpers import FORMAT, EegLslConfig
 
 logger = get_logger(__name__, logging.INFO)
 
+from typing import TypedDict, List
+
+class ToSave(TypedDict):
+    data: List[any]   
+    marker: str
 
 class EegLSLRecorder(Process):
     previous_ts = 0
@@ -27,18 +33,15 @@ class EegLSLRecorder(Process):
     def turn_off(self):
         logger.info("Turning off LSLStreamer")
 
-    def parse_message(self, message: bytearray, marker: str) -> str | bytearray:
-        marker_column = self.config.COL_SEPARATOR + marker
-
+    def parse_message(self, to_save: ToSave) -> str | bytearray:
         if self.config.OUTPUT_FORMAT == FORMAT.ASCII:
             try:
-                msg: str = message.decode("ascii")
-                return msg.replace("\n", f"{marker_column}\n")
+                return json.dumps(to_save) + '\n'
             except UnicodeDecodeError:
                 logger.error("Error decoding message")
                 return ""
         else:
-            return message + marker_column.encode("ascii")
+            return json.dumps(to_save).encode('utf-8') + b'\n'
 
     def run(self):
         os.makedirs(self.config.DATA_PATH, exist_ok=True)
@@ -62,7 +65,20 @@ class EegLSLRecorder(Process):
                 timestamp = pylsl.local_clock()
                 delta_ts = np.round(timestamp - self.previous_ts, 2) if self.previous_ts != 0 else 0
                 self.previous_ts = timestamp
-                logger.info(f"New sample: {data_chunk} after {delta_ts}")
+                logger.debug(f"New sample: {data_chunk} after {delta_ts}")
+                if data_chunk:
+                    try:
+                        marker = self.jobs.get_nowait()
+                    except Empty:
+                        marker = "0"
+
+                    to_save = {
+                        'data': data_chunk,
+                        'marker': marker,
+                    }
+                    if msg := self.parse_message(to_save):
+                        logger.debug(f"<msg>{msg}</msg>")
+                        self.file.write(msg)
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error during UDP data acquisition:\n{ex}")

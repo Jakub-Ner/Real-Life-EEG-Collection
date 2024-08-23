@@ -18,6 +18,5 @@ class EegLslConfig:
     FILENAME: str
     CHUNK_SIZE: int = 5
     PULL_TIMEOUT: int = 1  # in seconds
-    COL_SEPARATOR: str = ","
     OUTPUT_FORMAT: FORMAT = FORMAT.ASCII
 

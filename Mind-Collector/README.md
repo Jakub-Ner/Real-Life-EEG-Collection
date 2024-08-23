@@ -8,6 +8,10 @@ A Pipeline suited for psychophysiological data acquisition and event annotation.
 
 **Recorder** is a Process that listens for incoming events emited by **Triggers**. It is responsible for collecting and annotating data. You can run multiple recorders at the same time.
 
+### EEG LSL Recorder
+It listens for a LSL stream and save. The data with annotations is saved as JSON Lines file.
+For creating a stream for a specific device, you can use [CortexBCIStreamer](https://github.com/BRomans/CortexBCIStreamer).
+
 ### EegUdp Recorder
 This recorder listens for incoming EEG data. It adds a column to the data and if the event is triggered, it annotates the data with the event name. The data is saved in a CSV file.
 
