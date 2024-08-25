@@ -1,3 +1,4 @@
+from __future__ import annotations
 from multiprocessing import Process, Queue
 import os
 from queue import Empty
