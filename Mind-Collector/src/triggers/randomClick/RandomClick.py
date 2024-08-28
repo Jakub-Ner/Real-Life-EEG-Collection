@@ -2,6 +2,8 @@ from multiprocessing import Process, Queue
 import random
 from ahk import AHK
 import time
+import pyautogui
+import numpy as np
 from pynput import keyboard
 import logging
 
@@ -55,12 +57,32 @@ class RandomClick(Process):
             logger.debug(f"User pressed {self.config.KEY}, timer will reset.")
             self.set_timer()
 
+    def is_player_dead(self):
+        if not (self.config.DEATH_AREA_TOP and self.config.DEATH_AREA_BOTTOM):
+            return False
+        
+        top_left = self.config.DEATH_AREA_TOP
+        bottom_right = self.config.DEATH_AREA_BOTTOM
+        screenshot = pyautogui.screenshot(
+            region=(top_left[0], top_left[1], bottom_right[0] - top_left[0], bottom_right[1] - top_left[1])
+            )
+        arr = np.array(screenshot)
+        num_of_non_gray_pixels = len(arr[(arr[:,:,0] != arr[:,:,1]) | (arr[:,:,1] != arr[:,:,2])])
+        if num_of_non_gray_pixels < 100:
+            return True 
+        return False
+
     def wait(self):
         self.set_timer()
 
         while self.time_to_wait > 0:
             time.sleep(1)
             self.time_to_wait -= 1
+            
+        while self.is_player_dead():
+            time.sleep(1)
+            logger.debug("Player is dead, waiting for respawn")
+
 
     def trigger(self):
         self.is_triggered = True
