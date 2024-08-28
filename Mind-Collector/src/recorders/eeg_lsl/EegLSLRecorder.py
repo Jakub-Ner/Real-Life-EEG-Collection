@@ -8,18 +8,17 @@ from queue import Empty
 from tkinter import messagebox
 import logging
 import json
-
 from pylsl import resolve_stream, StreamInlet, pylsl
+from typing import TypedDict, List, Any
 
 from src.utils.logger import get_logger
 from .config_helpers import FORMAT, EegLslConfig
 
 logger = get_logger(__name__, logging.INFO)
 
-from typing import TypedDict, List
 
 class ToSave(TypedDict):
-    data: List[any]   
+    data: List[Any]   
     marker: str
 
 class EegLSLRecorder(Process):

@@ -73,7 +73,13 @@ recorders = [
 triggers = [
     Factory(
         CLASS=RandomClick,
-        CONFIG=RandomClickConfig(KEY="d", MARKER='3', RANDOM_RANGE=range(300, 320, 1)),
+        CONFIG=RandomClickConfig(
+            KEY="d", 
+            MARKER='3',
+            RANDOM_RANGE=range(300, 350, 1),
+            DEATH_AREA_TOP=(570, 962),
+            DEATH_AREA_BOTTOM=(619, 984),
+        ),
     ),
     Factory(
         CLASS=ScreenshotMarker,
