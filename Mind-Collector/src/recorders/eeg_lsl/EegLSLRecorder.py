@@ -32,7 +32,7 @@ class EegLSLRecorder(Process):
     def turn_off(self):
         logger.info("Turning off LSLStreamer")
 
-    def parse_message(self, to_save: ToSave) -> str | bytearray:
+    def parse_message(self, to_save: ToSave) -> str | bytes:
         if self.config.OUTPUT_FORMAT == FORMAT.ASCII:
             try:
                 return json.dumps(to_save) + '\n'
@@ -71,7 +71,7 @@ class EegLSLRecorder(Process):
                     except Empty:
                         marker = "0"
 
-                    to_save = {
+                    to_save: ToSave = {
                         'data': data_chunk,
                         'marker': marker,
                     }
