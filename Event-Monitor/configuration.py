@@ -1,4 +1,4 @@
-from src.utils.config_helpers import GeneralConfig
+from src.utils.config_helpers import Config
 
 
-GENERAL_CONFIG = GeneralConfig()
+CONFIG = Config()

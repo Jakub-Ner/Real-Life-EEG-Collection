@@ -27,6 +27,7 @@ general_config = GeneralConfigType(
     FILENAME_PREFIX="lol",
     META_DATA={
         'markers': {
+            '0': 'none',
             '1': 'kill',
             '2': 'death',
             '3': 'random flash',

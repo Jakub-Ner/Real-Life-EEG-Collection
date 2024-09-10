@@ -1,34 +1,34 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
-from src.fragments.ScreenCastFragment.ScreenCastFragment import ScreenCastFragment
+from src.fragments.ScreenCastFragment import ScreenCastFragment
+from src.fragments.PlotFragments import PlotFragments
 
-from configuration import GENERAL_CONFIG
+from configuration import CONFIG, Config
 
 root = tk.Tk()
-root.title(GENERAL_CONFIG.TITLE)
-root.attributes('-zoomed', True)
-# root.state('zoomed')
+root.title(CONFIG.TITLE)
+# root.attributes('-zoomed', True)
 root.geometry()
 
 class Wrapper(tk.Frame):
-  def __init__(self, master, **kwargs):
+  def __init__(self, master, CONFIG: Config, **kwargs):
     super().__init__(master, **kwargs)
+    self.CONFIG = CONFIG
 
-    self.screenCastFragment = ScreenCastFragment(self) 
-    self.screenCastFragment2 = ScreenCastFragment(self) 
+    self.screenCastFragment = ScreenCastFragment(self, self.CONFIG) 
+    self.plotFragments = PlotFragments(self, self.CONFIG) 
 
-    # self.pack(fill=tk.BOTH, expand=True)
-    self.arange()
+    self.pack()
 
-  def arange(self):
-    self.pack(anchor="n")
+  def pack(self, *args, **kwargs):
 
-    self.screenCastFragment.arrange()
-    self.screenCastFragment2.arrange()
+    self.screenCastFragment.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    self.plotFragments.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-    self.after(300, self.arange)
+    super().pack(fill=tk.BOTH, expand=True)
+    self.after(self.CONFIG.REFRESH_DELAY, self.pack)
 
 
-wrapper = Wrapper(root)
+wrapper = Wrapper(root, CONFIG)
 root.mainloop()
