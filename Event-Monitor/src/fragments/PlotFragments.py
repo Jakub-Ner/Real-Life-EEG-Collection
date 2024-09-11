@@ -15,7 +15,8 @@ class PlotFragments(tk.Canvas):
     self.CONFIG = CONFIG
 
     self.left_fragment = PlotBaseFragment(self, self.CONFIG, CONFIG.EEG_AGGREGATION)
-    self.right_fragment = PlotBaseFragment(self, self.CONFIG, self.CONFIG.EEG_PREDICTION)
+    # TODO: check if CONFIG.EEG_PREDICTION is not None
+    self.right_fragment = PlotBaseFragment(self, self.CONFIG, self.CONFIG.EEG_PREDICTION) # type: ignore
 
     self.run_thread = True
     self.thread = Thread(target=self.produce)

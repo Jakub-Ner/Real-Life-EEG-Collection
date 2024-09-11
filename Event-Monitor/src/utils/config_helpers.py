@@ -11,16 +11,17 @@ class EegChannel:
     
 @dataclass
 class Config:
-    TITLE: str = "Event Monitor"
-    REFRESH_DELAY: int = 300
+    EEG_SAMPLING_RATE: int
+    EEG_DATA_PATH: str
+    EEG_CHANNELS: list[EegChannel]
+    EEG_AGGREGATION: Callable[[np.ndarray], float] # don't use lambdas, because plot calls Callable.__name__ 
+    EEG_MARKERS: dict[str, str]
 
-    EEG_DATA_PATH: str = "./eeg_data.csv"
+    TITLE: str = "Event Monitor"
+    REFRESH_DELAY: int = 40
+
     EEG_BUFFER_SIZE: int = 100
     EEG_REALTIME: bool = False
-    EEG_CHANNELS: list[EegChannel]|None = None
-    EEG_AGGREGATION: Callable[[np.ndarray], float] = lambda row: row.mean(axis=0)
-    EEG_MARKERS: dict[str, str] = {'0': 'none', '1': 'kill', '2': 'death'}
-
-    # TODO: EEG_PREDICTION
-    EEG_PREDICTION: Callable[[np.ndarray], float] = lambda row: row.mean(axis=0) # TODO: replace with model.predict
+ 
+    EEG_PREDICTION: Callable[[np.ndarray], float]|None = None
 

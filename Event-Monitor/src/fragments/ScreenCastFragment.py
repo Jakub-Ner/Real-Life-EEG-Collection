@@ -5,8 +5,6 @@ import pyautogui
 
 from src.utils.config_helpers import Config
 
-
-
 class ScreenCastFragment(tk.Canvas):
   def __init__(self, master, CONFIG: Config, **kwargs):
     super().__init__(master, **kwargs)

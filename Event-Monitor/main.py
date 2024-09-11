@@ -16,14 +16,14 @@ class Wrapper(tk.Frame):
     super().__init__(master, **kwargs)
     self.CONFIG = CONFIG
 
-    self.screenCastFragment = ScreenCastFragment(self, self.CONFIG) 
+    # self.screenCastFragment = ScreenCastFragment(self, self.CONFIG) 
     self.plotFragments = PlotFragments(self, self.CONFIG) 
 
     self.pack()
 
   def pack(self, *args, **kwargs):
 
-    self.screenCastFragment.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    # self.screenCastFragment.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
     self.plotFragments.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
     super().pack(fill=tk.BOTH, expand=True)
