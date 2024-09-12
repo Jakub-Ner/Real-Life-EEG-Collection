@@ -1,7 +1,7 @@
 from typing import Iterable
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
-import numpy as np
+from matplotlib.colors import TABLEAU_COLORS, XKCD_COLORS # type: ignore
 import matplotlib.pyplot as plt
 
 from src.utils.config_helpers import Config, EegChannel
@@ -24,10 +24,14 @@ def prepare_figure(CONFIG: Config, ylabel: str) -> tuple[Figure, plt.Axes]:
   return fig, ax
 
 def prepare_lines(channels: list[EegChannel]) -> list[Line2D]:
+  if len(channels) > len(TABLEAU_COLORS):
+    colors = iter(XKCD_COLORS.values())
+  else:
+    colors = iter(TABLEAU_COLORS.values()) 
+
   lines = []
   for channel in channels:
-    line = Line2D([], [])
-    line.set_label(channel.name)
+    line = Line2D([], [], color=next(colors), label=channel.name)
     # TODO: if not display, set line to invisible
     lines.append(line)
   return lines 
