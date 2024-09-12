@@ -18,10 +18,12 @@ class Config:
     EEG_MARKERS: dict[str, str]
 
     TITLE: str = "Event Monitor"
-    REFRESH_DELAY: int = 40
+    REFRESH_DELAY: float = 0.04 # seconds
 
     EEG_BUFFER_SIZE: int = 100
     EEG_REALTIME: bool = False
+    EEG_XTICKS: int = 4
+    EEG_YTICKS: range = range(10, 20, 4)
  
     EEG_PREDICTION: Callable[[np.ndarray], float]|None = None
 

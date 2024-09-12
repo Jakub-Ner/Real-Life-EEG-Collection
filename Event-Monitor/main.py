@@ -27,7 +27,8 @@ class Wrapper(tk.Frame):
     self.plotFragments.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
     super().pack(fill=tk.BOTH, expand=True)
-    self.after(self.CONFIG.REFRESH_DELAY, self.pack)
+    to_ms = int(self.CONFIG.REFRESH_DELAY * 1_000)
+    self.after(to_ms, self.pack)
 
 
 wrapper = Wrapper(root, CONFIG)

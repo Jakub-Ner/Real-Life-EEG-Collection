@@ -1,13 +1,17 @@
 
+import os
 import tkinter as tk
 from typing import Generator
 import numpy as np
 import time
 from threading import Thread
 
+from src.utils.logger import get_logger
+
 from .PlotEegFragment import PlotBaseFragment
 from src.utils.config_helpers import Config
 
+logger = get_logger(__name__)
 
 class PlotFragments(tk.Canvas):
   def __init__(self, master, CONFIG: Config, **kwargs):
@@ -22,22 +26,29 @@ class PlotFragments(tk.Canvas):
     self.thread = Thread(target=self.produce)
     self.thread.start()
 
-  def read_eeg(self) -> Generator[str, None, None]:
-    # TODO: validate is not None
+  def wait_and_open(self):
+    if self.CONFIG.EEG_REALTIME:
+      while not os.path.exists(self.CONFIG.EEG_DATA_PATH):
+        logger.info(f"Waiting for {self.CONFIG.EEG_DATA_PATH}")
+        time.sleep(1)
+
     self.file = open(self.CONFIG.EEG_DATA_PATH, 'r')
     if self.CONFIG.EEG_REALTIME:
         self.file.seek(0, 2)
-      
+
+  def read_eeg(self) -> Generator[str, None, None]:
+    self.wait_and_open()
     while self.run_thread:
       line = self.file.readline()
       if not line:
-        time.sleep(0.1)
+        time.sleep(self.CONFIG.REFRESH_DELAY / 2)
         continue
       yield line
     return None
 
   def produce(self, *args, **kwargs) :
     for data_row in self.read_eeg():
+      logger.info("Get new row!")
       array = np.fromstring(data_row, sep=',')
       self.left_fragment.consume(array)
       self.right_fragment.consume(array)
