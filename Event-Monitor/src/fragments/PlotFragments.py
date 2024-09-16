@@ -6,12 +6,12 @@ import numpy as np
 import time
 from threading import Thread
 
-from src.utils.logger import get_logger
+from src.utils.logger import get_logger, logging
 
 from .PlotEegFragment import PlotBaseFragment
 from src.utils.config_helpers import Config
 
-logger = get_logger(__name__)
+logger = get_logger(__name__, logging.INFO)
 
 class PlotFragments(tk.Canvas):
   def __init__(self, master, CONFIG: Config, **kwargs):
@@ -48,7 +48,7 @@ class PlotFragments(tk.Canvas):
 
   def produce(self, *args, **kwargs) :
     for data_row in self.read_eeg():
-      logger.info("Get new row!")
+      logger.debug("Get new row!")
       array = np.fromstring(data_row, sep=',')
       self.left_fragment.consume(array)
       self.right_fragment.consume(array)

@@ -65,45 +65,45 @@ screen_config = ScreenConfig(
 )
 
 recorders = [
-    #Factory(CLASS=EegUdpRecorder, CONFIG=eeg_udp_config),
-    Factory(CLASS=EegLSLRecorder, CONFIG=eeg_lsl_config),
-    Factory(CLASS=CameraRecorder, CONFIG=camera_config),
-    Factory(CLASS=ScreenRecorder, CONFIG=screen_config),
+    Factory(CLASS=EegUdpRecorder, CONFIG=eeg_udp_config),
+    # Factory(CLASS=EegLSLRecorder, CONFIG=eeg_lsl_config),
+    # Factory(CLASS=CameraRecorder, CONFIG=camera_config),
+    # Factory(CLASS=ScreenRecorder, CONFIG=screen_config),
 ]
 
 triggers = [
-    Factory(
-        CLASS=RandomClick,
-        CONFIG=RandomClickConfig(
-            KEY="d", 
-            MARKER='3',
-            RANDOM_RANGE=range(300, 350, 1),
-            DEATH_AREA_TOP=(570, 962),
-            DEATH_AREA_BOTTOM=(619, 984),
-        ),
-    ),
-    Factory(
-        CLASS=ScreenshotMarker,
-        CONFIG=ScreenshotMarkerConfig(
-            TOP=(1637, 0),
-            BOTTOM=(1678, 25),
-            MARKER="1", # kill event
-            EVENT_NAME=general_config.META_DATA['markers']['1'],
-            DELAY_S=0.1,
-            DATA_PATH=general_config.get_full_path(),
-        ),
-    ),
-    Factory(
-        CLASS=ScreenshotMarker,
-        CONFIG=ScreenshotMarkerConfig(
-            TOP=(1680, 0),
-            BOTTOM=(1705, 25),
-            MARKER="2", # death event
-            EVENT_NAME=general_config.META_DATA['markers']['2'],
-            DELAY_S=0.1,
-            DATA_PATH=general_config.get_full_path(),
-        ),
-    ),
+#     Factory(
+#         CLASS=RandomClick,
+#         CONFIG=RandomClickConfig(
+#             KEY="d", 
+#             MARKER='3',
+#             RANDOM_RANGE=range(300, 350, 1),
+#             DEATH_AREA_TOP=(570, 962),
+#             DEATH_AREA_BOTTOM=(619, 984),
+#         ),
+#     ),
+#     Factory(
+#         CLASS=ScreenshotMarker,
+#         CONFIG=ScreenshotMarkerConfig(
+#             TOP=(1637, 0),
+#             BOTTOM=(1678, 25),
+#             MARKER="1", # kill event
+#             EVENT_NAME=general_config.META_DATA['markers']['1'],
+#             DELAY_S=0.1,
+#             DATA_PATH=general_config.get_full_path(),
+#         ),
+#     ),
+#     Factory(
+#         CLASS=ScreenshotMarker,
+#         CONFIG=ScreenshotMarkerConfig(
+#             TOP=(1680, 0),
+#             BOTTOM=(1705, 25),
+#             MARKER="2", # death event
+#             EVENT_NAME=general_config.META_DATA['markers']['2'],
+#             DELAY_S=0.1,
+#             DATA_PATH=general_config.get_full_path(),
+#         ),
+#     ),
 ]
 
 CONFIG = ConfigType(

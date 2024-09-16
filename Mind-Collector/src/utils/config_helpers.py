@@ -14,7 +14,7 @@ logger = get_logger(__name__)
 class GeneralConfigType:
     DATA_PATH: str
     FILENAME_PREFIX: str
-    META_DATA: dict = {}
+    META_DATA: dict
 
     def __post_init__(self):
         self.FILENAME_PREFIX = f"{self.FILENAME_PREFIX}_{get_now(True)}"

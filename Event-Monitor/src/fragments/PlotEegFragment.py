@@ -59,9 +59,11 @@ class PlotBaseFragment(tk.Canvas):
 
   def consume(self, row: np.ndarray):
     self.deb_counter += 1
-    aggregated_row = np.array(
-      [self.row_transform(row[channel.columns]) for channel in self.CONFIG.EEG_CHANNELS] + [row[-1]]
-    )
+    aggregated_row = self.row_transform(
+      np.array(
+        [row[channel.columns] for channel in self.CONFIG.EEG_CHANNELS]
+    ))
+    aggregated_row = np.append(aggregated_row, values=row[-1])
     self.buffer.add(aggregated_row)
 
   def pack(self, *args, **kwargs):

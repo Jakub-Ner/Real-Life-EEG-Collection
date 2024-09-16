@@ -14,7 +14,7 @@ class Config:
     EEG_SAMPLING_RATE: int
     EEG_DATA_PATH: str
     EEG_CHANNELS: list[EegChannel]
-    EEG_AGGREGATION: Callable[[np.ndarray], float] # don't use lambdas, because plot calls Callable.__name__ 
+    EEG_AGGREGATION: Callable[[np.ndarray], np.ndarray] # don't use lambdas, because plot calls Callable.__name__ 
     EEG_MARKERS: dict[str, str]
 
     TITLE: str = "Event Monitor"
@@ -25,5 +25,5 @@ class Config:
     EEG_XTICKS: int = 4
     EEG_YTICKS: range = range(10, 20, 4)
  
-    EEG_PREDICTION: Callable[[np.ndarray], float]|None = None
+    EEG_PREDICTION: Callable[[np.ndarray], np.ndarray]|None = None
 
