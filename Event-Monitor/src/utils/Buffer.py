@@ -18,3 +18,7 @@ class Buffer:
   
   def __len__(self):
     return self.size
+  
+  @property
+  def width(self):
+    return self.array.shape[1]

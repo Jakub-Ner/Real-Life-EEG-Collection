@@ -1,6 +1,6 @@
 
 import tkinter as tk
-from typing import Callable
+from typing import Callable, Iterable
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -10,7 +10,7 @@ import numpy as np
 import time
 
 from src.utils.Buffer import Buffer
-from src.utils.config_helpers import Config, EegChannel
+from src.utils.config_helpers import Config, PlotArgument
 from src.utils.logger import get_logger
 from src.utils.plots import prepare_figure, prepare_lines
 
@@ -18,11 +18,13 @@ logger = get_logger(__name__)
 
 
 class PlotBaseFragment(tk.Canvas):
-  def __init__(self, master, CONFIG: Config, row_transform: Callable[[np.ndarray], float], **kwargs):
+  def __init__(self, master, CONFIG: Config, row_transform: Callable[[np.ndarray], np.ndarray], arguments: list[PlotArgument], yticks: Iterable, **kwargs):
     super().__init__(master, **kwargs)
     self.CONFIG = CONFIG
     self.row_transform = row_transform
-    self.buffer = Buffer(shape=(CONFIG.EEG_BUFFER_SIZE, len(CONFIG.EEG_CHANNELS) + 1))
+    self.arguments = arguments
+    self.buffer = Buffer(shape=(CONFIG.EEG_BUFFER_SIZE, len(arguments) + 1))
+    self.yticks = yticks
 
     self.prepare_plt()
 
@@ -34,8 +36,8 @@ class PlotBaseFragment(tk.Canvas):
 
   def prepare_plt(self):
     plt.style.use('ggplot') # use plt.style.available to se more
-    self.fig, self.ax = prepare_figure(self.CONFIG, self.row_transform.__name__)
-    self.lines = prepare_lines(self.CONFIG.EEG_CHANNELS)
+    self.fig, self.ax = prepare_figure(self.CONFIG, self.row_transform.__name__, self.yticks)
+    self.lines = prepare_lines(self.arguments)
     for line in self.lines:
       self.ax.add_line(line)
     

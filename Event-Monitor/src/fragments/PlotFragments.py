@@ -1,4 +1,3 @@
-
 import os
 import tkinter as tk
 from typing import Generator
@@ -18,9 +17,8 @@ class PlotFragments(tk.Canvas):
     super().__init__(master, **kwargs)
     self.CONFIG = CONFIG
 
-    self.left_fragment = PlotBaseFragment(self, self.CONFIG, CONFIG.EEG_AGGREGATION)
-    # TODO: check if CONFIG.EEG_PREDICTION is not None
-    self.right_fragment = PlotBaseFragment(self, self.CONFIG, self.CONFIG.EEG_PREDICTION) # type: ignore
+    self.left_fragment = PlotBaseFragment(self, self.CONFIG, CONFIG.DATA_FRAGMENT.PLOT_FUNCTION, CONFIG.DATA_FRAGMENT.ARGUMENTS, CONFIG.DATA_FRAGMENT.EEG_YTICKS)
+    self.right_fragment = PlotBaseFragment(self, self.CONFIG, self.CONFIG.PREDICT_FRAGMENT.PLOT_FUNCTION, self.CONFIG.PREDICT_FRAGMENT.ARGUMENTS, self.CONFIG.PREDICT_FRAGMENT.EEG_YTICKS)
 
     self.run_thread = True
     self.thread = Thread(target=self.produce)
