@@ -65,6 +65,8 @@ class EegUdpRecorder(Process):
                     if msg := self.parse_message(message_byte, marker):
                         logger.debug(f"<msg>{msg}</msg>")
                         self.file.write(msg)
+                        self.file.flush()
+
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error during UDP data acquisition:\n{ex}")
