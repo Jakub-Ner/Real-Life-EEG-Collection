@@ -82,28 +82,28 @@ triggers = [
 #             DEATH_AREA_BOTTOM=(619, 984),
 #         ),
 #     ),
-#     Factory(
-#         CLASS=ScreenshotMarker,
-#         CONFIG=ScreenshotMarkerConfig(
-#             TOP=(1637, 0),
-#             BOTTOM=(1678, 25),
-#             MARKER="1", # kill event
-#             EVENT_NAME=general_config.META_DATA['markers']['1'],
-#             DELAY_S=0.1,
-#             DATA_PATH=general_config.get_full_path(),
-#         ),
-#     ),
-#     Factory(
-#         CLASS=ScreenshotMarker,
-#         CONFIG=ScreenshotMarkerConfig(
-#             TOP=(1680, 0),
-#             BOTTOM=(1705, 25),
-#             MARKER="2", # death event
-#             EVENT_NAME=general_config.META_DATA['markers']['2'],
-#             DELAY_S=0.1,
-#             DATA_PATH=general_config.get_full_path(),
-#         ),
-#     ),
+     Factory(
+         CLASS=ScreenshotMarker,
+         CONFIG=ScreenshotMarkerConfig(
+             TOP=(1637, 0),
+             BOTTOM=(1678, 25),
+             MARKER="1", # kill event
+             EVENT_NAME=general_config.META_DATA['markers']['1'],
+             DELAY_S=0.1,
+             DATA_PATH=general_config.get_full_path(),
+         ),
+     ),
+     Factory(
+         CLASS=ScreenshotMarker,
+         CONFIG=ScreenshotMarkerConfig(
+             TOP=(1680, 0),
+             BOTTOM=(1705, 25),
+             MARKER="2", # death event
+             EVENT_NAME=general_config.META_DATA['markers']['2'],
+             DELAY_S=0.1,
+             DATA_PATH=general_config.get_full_path(),
+         ),
+     ),
 ]
 
 CONFIG = ConfigType(

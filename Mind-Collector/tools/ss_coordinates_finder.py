@@ -1,9 +1,9 @@
-import pyautogui
 import tkinter as tk
-from PIL import ImageTk
 import tkinter.font as tkFont
 
+import pyautogui
 from common import wait_for_enter
+from PIL import ImageTk
 
 
 def update_mouse_position(event):

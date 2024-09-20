@@ -1,6 +1,11 @@
 
 
 ## TODO:
-- enable for hiding selected ploted lines
 - add markers
-- support offline 
+- support 
+    - `d` for deletion
+    - numbers for annotations
+- apply annotations
+- ~~enable for hiding selected ploted lines~~
+- ~~support offline ~~
+

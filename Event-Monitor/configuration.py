@@ -18,7 +18,7 @@ def predict(row: np.ndarray) -> np.ndarray:
     # print(input_name)
 
     prediction = np.array(session.run(label_name, {input_name: row.astype(np.float32).reshape(1, -1)})[0])
-    print(prediction)
+    # print(prediction)
     return prediction
 
 EEG_CHANNELS = [
@@ -30,7 +30,7 @@ EEG_CHANNELS = [
 ]
 
 DATA_FRAGMENT_CONFIG = PlotFragmentConfig(
-    EEG_YTICKS=range(25, 50, 5),
+    EEG_YTICKS=range(10, 30, 5),
     PLOT_FUNCTION=mean_band,
     ARGUMENTS=EEG_CHANNELS,
     # X_NUMBER=6, # 5 channels + 1 marker
@@ -49,11 +49,11 @@ CONFIG = Config(
     TITLE="Event Monitor",
     REFRESH_DELAY=0.1, # seconds
 
-    EEG_DATA_PATH="../Mind-Collector/data/lol_2024-08-08T14-29-23/eeg.csv.out",
+    EEG_DATA_PATH="./eeg.csv.out",
     EEG_BUFFER_SIZE=100,
     EEG_REALTIME=True,
     EEG_SAMPLING_RATE=25,
-    MARKERS={'0': 'none', '1': 'kill', '2': 'death'},
+    MARKERS={'1': 'kill', '2': 'death'},
     EEG_CHANNELS=EEG_CHANNELS,
 
 
