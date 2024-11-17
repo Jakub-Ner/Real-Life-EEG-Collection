@@ -11,5 +11,5 @@ An app consisting of recorders (EEG, Video, Screen etc.) and event triggers. The
 *Tested on League of Legends. Please note that the program may be detected as a cheat and you may get banned.*
 
 
-#### Event Monitor (In Future)
+#### [Event Monitor](./Event-Monitor/README.md)
 Tool for seamless recording (EEG, markers and video) analysis and markers preview and edition.
