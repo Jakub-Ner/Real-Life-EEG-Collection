@@ -30,7 +30,7 @@ EEG_CHANNELS = [
 ]
 
 DATA_FRAGMENT_CONFIG = PlotFragmentConfig(
-    EEG_YTICKS=range(10, 30, 5),
+    EEG_YTICKS=range(0, 80, 10),
     PLOT_FUNCTION=mean_band,
     ARGUMENTS=EEG_CHANNELS,
     # X_NUMBER=6, # 5 channels + 1 marker
@@ -49,10 +49,11 @@ CONFIG = Config(
     TITLE="Event Monitor",
     REFRESH_DELAY=0.1, # seconds
 
-    EEG_DATA_PATH="./eeg.csv.out",
-    EEG_BUFFER_SIZE=100,
+    EEG_DATA_PATH="C://Log//data.txt",
+    EEG_DATA_DELIMETER=" ", 
+    EEG_BUFFER_SIZE=32,
     EEG_REALTIME=True,
-    EEG_SAMPLING_RATE=25,
+    EEG_SAMPLING_RATE=1,
     MARKERS={'1': 'kill', '2': 'death'},
     EEG_CHANNELS=EEG_CHANNELS,
 

@@ -29,7 +29,7 @@ class PlotBaseFragment(tk.Canvas):
         self.CONFIG = CONFIG
         self.row_transform = row_transform
         self.arguments = arguments
-        self.buffer = Buffer(shape=(CONFIG.EEG_BUFFER_SIZE, len(arguments) + 1))
+        self.buffer = Buffer(shape=(CONFIG.EEG_BUFFER_SIZE, len(arguments)))
         self.yticks = yticks
 
         self.prepare_plt()
@@ -70,7 +70,6 @@ class PlotBaseFragment(tk.Canvas):
             for i, line in enumerate(self.lines):
                 line.set_data(xs, data[:, i])
 
-            self.plot_markers(data[:, -1])
             self.ax.legend(loc="upper left")
             time.sleep(self.CONFIG.REFRESH_DELAY)
 
@@ -79,12 +78,6 @@ class PlotBaseFragment(tk.Canvas):
         aggregated_row = self.row_transform(
             np.array([row[channel.columns] for channel in self.CONFIG.EEG_CHANNELS])
         )
-        marker = int(row[-1])
-        aggregated_row = np.append(aggregated_row, values=[marker])
-        if marker != 0:
-            self.marker_lines.append(
-                self.ax.axvline(x=len(self.buffer), color=self.marker_colors[marker -11], linestyle="--")
-            )
         self.buffer.add(aggregated_row)
 
     def pack(self, *args, **kwargs):

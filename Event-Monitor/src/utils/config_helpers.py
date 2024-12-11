@@ -19,6 +19,7 @@ class PlotFragmentConfig:
 class Config:
     EEG_SAMPLING_RATE: int
     EEG_DATA_PATH: str
+    EEG_DATA_DELIMETER: str
     EEG_CHANNELS: list[PlotArgument]
 
     DATA_FRAGMENT: PlotFragmentConfig
